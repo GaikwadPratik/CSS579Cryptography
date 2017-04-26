@@ -1,0 +1,187 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{amsmath}
+\usepackage[T1]{fontenc}
+
+\title{Assignment 2}
+\author{Pratik Gaikwad}
+\date{10 April 2017}
+
+
+
+\begin{document}
+
+\maketitle
+
+\section{Computational security}
+    
+    Consider a symmetric-key encryption
+    \begin{center}
+        $ \prod $ = (Gen, Enc, Dec)
+    \end{center}
+    
+    \paragraph{Question 1:} What is a \emph{negligible function}, what is a \emph{PPT adversary}, and what is their importance in defining the computational security of 
+    \begin{math} 
+        \prod 
+    \end{math} as a \emph{relaxation} of perfect secrecy?
+    
+    \paragraph{Answer:\newline} 
+    
+        \begin{flushleft}
+            A function \emph{f} is called \emph{negligible function} \emph{if for every polynomial p(.) there exists an N such that for all integers n \textgreater N it holds that}
+            \begin{center}
+                $
+                    f(n) = \frac{1}{p(n)}
+                $
+            \end{center}
+            
+            An algorithm \emph{A} is said to run in polynomial time if there exists a polynomial \emph{p(.)} such that, for every input 
+                $
+                    x\in\{0,1\}^*
+                $.
+            Such an algorithm is called Probabilistic polynomial time(PPT) algorithm.
+            An adversary who can find the solution of \emph{A(x)} using PPT algorithm within at most \emph{p(|x|)} steps, where |x| denotes the length of string x, is called PPT adversary. \newline
+            
+            Computational security introduces two relaxations of the notion of perfect security:
+            \begin{enumerate}
+                \item Security is guaranteed only against  efficient (i.e. polynomial-time) adversaries;
+                \item Negligible probability of success is allowed.
+            \end{enumerate}
+            Both of these relaxations are essential for achieving practical cryptographic schemes, and in particular for bypassing the negative results for perfectly-secret encryption.
+        \end{flushleft}
+    
+    \paragraph{Question 2:} How is $\prod$'s \emph{security parameter} typically related to the input and output of algorithm Gen?
+    
+    \paragraph{Answer: \newline}
+        The security parameter $1^n$ is a representation of how strong output of key generation algorithm should be. The algorithm Gen's running time is a polynomial in the length of the input to the algorithm. The cryptographic operations have a running time that is asymptotically polynomial in the length of inputs and it follows that algorithms running time is asymptotically polynomial in the security parameter as the length of the inputs is the same as the security parameter. \newline
+        Any key \emph{k} which is output of Gen($1^n$) satisfies $|k|\geq n$. Because now the length of output key \emph{k} defined by security parameter \emph{n}, it would make harder for an adversary to decipher or gain knowledge of plain text based on length of the cipher text as all the output would be of same length.
+    
+    \paragraph{Question 3:} Show that if \emph{$v_1$} is negligible function, then for any positive polynomial \emph{p}, the function \emph{$v_2$(n) = p(n).$v_1$(n)} is also negligible. What does this imply for an attacker that attempts to break $\prod$ by \emph{guessing} its n-bit key \emph{k}(which selected by Gen uniformly from all possible keys)?
+    
+    \paragraph{Answer: \newline}
+        Consider any random polynomial positive q(n). Then p(n)q(n) is another polynomial. It is given that \emph{$v_1$} is negligible. As per our definition of negligible function,
+        \begin{center}
+            \begin{math}
+                (\exists n_0)(\forall nn_0)(v_1\leq \frac{1}{p(n)q(n)})            
+            \end{math}
+        \end{center}
+        Hence for all n \textgreater\ $n_0$,
+        \begin{center}
+            \begin{math}
+                v_2 = p(n).v_1 \leq\ \frac{p(n)}{p(n)q(n)}\ = \frac{1}{q(n)}
+            \end{math}
+        \end{center}
+        Thus for any random positive q(n), we have n $\in$ N such that for all n $\geq\ n_0$ is negligible $v_2 \leq\ \frac{1}{q(n)}$ which proves that $v_2$ is also negligible.
+    \citep{section1question3}
+    
+    \paragraph{Question 4:} Is \emph{f(n)} negligible, and why if 
+        \begin{enumerate}
+            \item 
+                \begin{math}
+                    f(n) = \frac{{n^{10}}^5}{{2^n}^\frac{1}{2}}
+                \end{math}
+            \item
+                \begin{math}
+                    f(n) = \frac{{n^{-5}}^{10}}{{10^5}.{{n^{10}}^5}}
+                \end{math}
+        \end{enumerate}
+        
+    \paragraph{Answer: \newline}
+        \begin{enumerate}
+            \item 
+                \begin{math}
+                    f(n) = \frac{{n^{10}}^5}{{2^n}^\frac{1}{2}}\\
+                    f(n) = {{n^{10}}^5}{{2^{-n}}^{\frac{1}{2}}}\\                    
+                \end{math}
+                where ${{2^{-n}}^{\frac{1}{2}}}$ represents a \emph{negligible} polynomial.
+                Based on the closure properties \emph{poly * negligible = negligible} this function \emph{f(n)} is negligible.
+            \item 
+                \begin{math}
+                    f(n) = \frac{{n^{-5}}^{10}}{{10^5}.{{n^{10}}^5}}\\
+                    f(n) = \frac{{n^{-50}}.{n^{-50}}}{{10^5}}\\
+                    f(n) = \frac{{n^{-100}}}{{10^5}}\\
+                \end{math}
+                In this case, none of the polynomials are negligible since for any positive value of n polynomial are not reducing to 0, hence in this case \emph{f(n)} is not negligible.
+        \end{enumerate}
+    
+\section{EAV-Security}
+    Recall the basic game-based definition for secrecy, EAV-security, and its alternative formulation, depicted in Figures 1 and 2, respectively. In both cases, a PPT adversary $\mathit{A}$ selects two messages in $\mathit{M}$, one of which is encrypted to form the challenge ciphertext $c_b$ that must be determined by $\mathit{A}$.
+    
+    \paragraph{Question 1:} Explain how the definition in Figure 1 intuitively captures the property that any efficient adversary $\mathit{A}$ \emph{can essentially only guess the challenge ciphertext}.
+    
+    \paragraph{Answer: \newline}
+        Figure 1 indicates the attack of \emph{A} in the presence of an Adversary. The adversary is allowed to choose the messages $\mathit{m_0}$ and $\mathit{m_1}$. Thus, even though it knows that c is an encryption of one of these plaintext messages, it still cannot determine which one was encrypted. Hence we know that the probability of choosing correct $b\prime$ by $\mathit{A}$ is exactly $\frac{1}{2}$. The probability  This is similar to guessing the outcome of the game with or without calculation to any random experiment. And thus an adversary \emph{A} can only guess the challenge ciphertext. \cite{section2question12}
+    
+    \paragraph{Question 2:} Explain how the definition in Figure 2 intuitively captures the property that any efficient adversary $\mathit{A}$ \emph{behaves essentially the same no matter what the challenge ciphertext is}.
+    \paragraph{Answer: \newline}
+        Definition in Figure 2 states that an adversary $\mathit{A}$ cannot determine which plaintext was encrypted with probability significantly better than a random guess. An another way of formalizing the definition is to state that every adversary behaves the same way whether it sees an encryption of $\mathit{m_0}$ or $\mathit{m_1}$. Since A outputs a single bit, "behaving the same way" means that it outputs 1 with almost the same probability in each case. Here constant \emph{b} is used rather than being chosen at random. Hence definition essentially states that \emph{A} cannot determine whether it is running in experiment $PrivK-EAV2_{A,\prod'}$(n,0) or $PrivK-EAV2_{A,\prod'}$(n,1).
+    
+    \paragraph{Question 3:} Show that the alternative formulation of Figure 2 implies EAV-security as defined in Figure 1.
+    \paragraph{Answer: \newline}
+        In Figure 2, the only difference is that the bit \emph{b} is now constant in encryption scheme rather than choosing at random. 
+        Even after this the probability of out of challenge cipher text by $\mathit{A}$ i.e. $b\prime$ is now increased by some negligible function \emph{v(n)}. But even with this increase in probability \emph{A} can't definitely say which message was encrypted with probability better than $\frac{1}{2}$ + \emph{v(n)}. Essentially Figure 2 implies security as defined in Figure 1.
+    
+    \paragraph{Question 4:} In reference to the game in Figure 1, how CPA-security and CCA-security extend EAV-security?
+    \paragraph{Answer: \newline}
+        CPA security is preserved since adversary \emph{A} is choosing the two messages to be encrypted but is unable to identify with probability more $\frac{1}{2}$ which one of two equal length message was encrypted using encryption scheme. This is even after he had made make polynomially many queries prior to sending the challenge messages to be encrypted by the encryption scheme. As the encryption is probabilistic and key generation is randomized, it would not be possible for an adversary to correctly guess the message from challenge cipher-text \newline \newline
+        CCA security is preserved since based on challenge cipher-text bit $c_b$ adversary \emph{A} can't tell neither which message was encrypted nor it reveals about encryption scheme or any other relevant information, even though we gave selected message also to an adversary along with challenge cipher text bit $c_b$. Hence an adversary can't gain any useful knowledge of the scheme to predict future cipher text.
+
+\section{On leaking, or hiding, the message length}
+    Consider encryption scheme $\prod$ = (Gen, Enc, Dec) that is EAV-secure w.r.t. the definition in Figure 1.
+    
+    \paragraph{Question 1:} What does the condition $|m_0| = |m_1|$ capture? Does it weakens or strengthen $\prod$'s security?
+    \paragraph{Answer: \newline}
+        The limitation that $|m_0| = |m_1|$ imposes that length of selected messages should be same. As the key generated by \emph{Gen} will be of length of \emph{n}, the length of cipher text at the output of \emph{Enc} will be greater or equal to \emph{n}. \newline
+        This will avoid leakage of any information about plain text from cipher text because of variance in length. Thus Indistinguishability of the encryption scheme increase which in turn strengthen $\prod$'s security.
+        
+    \paragraph{Question 2:} Let $PrivK-EAV2_{A,\prod'}$(n) be the game in Figure 1 where \emph{A} is allowed to choose challenge messages of \emph{arbitrary length} for breaking encryption scheme $\prod' = (Gen',Enc',Dec')$, and consider the security notion derived by this modified game: Intuitively, $\prod'$ is EAV2-secure, if no efficient \emph{A} can determine $c_b$ better than guessing, even when $|m_0| \neq |m_1|$. Show that no EAV2-secure scheme $\prod'$ exists.
+    \paragraph{Answer: \newline}
+    
+\section{Pseudorandomness \& modes of encryption}
+    Recall the definitions of pseudorandom generators (PRGs) and pseudorandom functions (PRFs).
+    
+    \paragraph{Question 1:} If \emph{H}:$\{0,1\}^{l(n)}$ is a PRG with expansion factor \emph{l(n)} $\geq$ \emph{2n}, then G(H) = $H(s_1,s_2,..., s_{\frac{n}{2}})$, where s = $s_1,s_2,..., s_{\frac{n}{2}}$ is also a PRG. Determine whether $G\prime(s)=G(0^{|s|}||s)$ is necessarily a PRG, when \emph{G} is PRG.
+    
+    \paragraph{Answer: \newline}
+    If a string of length \emph{2n} is given, then we can divide it in two n-bits string \emph{s||t}. The output of $G\prime$ is 1 if ${F_s}(0^n) = t$. This type of distinguishing is PPT. Also $Pr_{s\leftarrow{\{0,1\}^n}}[D(G(s)) = 1]$. If input = \emph{s||t} is random then the probability that \emph{t} is equal to $F_s{(0^n)}$ is exactly $2^{-n}$ and so $Pr_{s\leftarrow{\{0,1\}^n}}[D(s) = 1] = 2^{-n}$. This computation can be done with non-negligible probability ${1-2^{-n}}$. Hence $G\prime$ is not necessarily a PRG.
+    
+    \paragraph{Question 2:} If $F_k$ is a length-preserving PRF, determine whether the keyed function ${F\prime}_k:{\{0,1\}}^{n-1}\rightarrow{\{0,1\}}^{2n}$, with ${F\prime}_k=F_k(0||x)||F_k(x||1)$, is also a PRF.
+    \paragraph{Answer: \newline}
+    
+    
+    \paragraph{Question 4:} When using the CBC, OFB and CTR modes of operation what is the effect of: a) a single-bit error in the cipher text and b) a dropped ciphertext block)?
+    \paragraph{Answer: \newline}
+    \begin{enumerate}
+        \item CBC mode: In CBC mode, plain text message is XOR-ed with output of previous block before adding to encryption. An initial Vector(IV) is used for initial block. 
+            \begin{enumerate}
+                \item A single bit error in cipher-text: \newline
+                In this case, the error will propagate through next cipher blocks since the output of one block is used as input to XOR function. Further, the position of erroneous bit will remain same in all the next cipher blocks. Since the error is propagated, the decrypted output will differ significantly from original plain-text message.
+                \item Dropped cipher-text block:\newline
+                In this case, the plain text of the dropped block will not be available. This will also break the decryption chain since there won't previous cipher-text block is used as an input to XOR for decryption to get the plain text. The output of all the next blocks will be affected and will be different than original plain text.
+            \end{enumerate}
+        \item OFB mode: In OFB mode, output of previous encryption block before being XOR-ed with plaintext is used as input to next block. An initial vector is used for first block.
+            \begin{enumerate}
+                \item A single bit error in ciphertext:\newline
+                In this case, the error will not propagate to next block but it will remain in the same location and in the same block. The decrypted output won't differ much from original plaintext.
+                \item Droppped ciphertext block: \newline
+                In this case, similar to CBC, the plain text related to dropped block will not be available. But this will not affect next blocks since the cipher text is not used as input to next blocks and in this sense OFB is autorecoverable.
+            \end{enumerate}
+        \item CTR mode: In CTR mode, there is no feedback. pseudorandomness in the key stream is achieved using a counter. An \emph{n} bit counter is used to an initial predefined value and increased with predefined rule. Plaintext message are then XOR-ed with encrypted value of the counter.
+            \begin{enumerate}
+                \item A single bit error in ciphertext:\newline
+                    This will be similar to OFB mode. Since the output of one block is not fed to another, the error will not propagate. It will remain in the same location and in the same block. The decrypted output won't differ much from original plaintext.
+                \item Droppped ciphertext block: \newline
+                In this case, decryption of that block only will not be available. Since there is no feedback or chaining, other blocks will not be affected.            
+            \end{enumerate}
+    \end{enumerate}
+
+\section{Conclusion}
+``I always thought something was fundamentally wrong with the universe'' \citep{section1question3}
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}
