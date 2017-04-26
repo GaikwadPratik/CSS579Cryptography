@@ -178,8 +178,29 @@
             \end{enumerate}
     \end{enumerate}
 
-\section{Conclusion}
-``I always thought something was fundamentally wrong with the universe'' \citep{section1question3}
+\section{Problem 5: Message authentication codes}
+    \paragraph{Question 4:}Show that appending the message length |m| at the end of the message \emph{m} before applying basic CBC-MAC, yields an insecure MAC for arbitrary-length messages.
+    \paragraph{Answer: \newline}
+    If we append the length of the message at the end of message the message syntax, after CBC-MAC, will be \newline
+    \begin{center}
+        $\mathit{M} = MAC(m,|m|)$
+    \end{center}
+    Let's assume that adversary obtains, by querying \emph{Oracle}, tags for two messages $\mathit{m_0}$ and $\mathit{m_1}$ as $\mathit{t_0}$ and $\mathit{t_1}$ respectively. Now those two message can be XOR-ed and another query to \emph{Oracle} is made such that third query is as below \newline
+    \begin{center}
+        $\mathit{m_0||n||m_1}$
+    \end{center}
+    For e.g. let's assume that below messages are queried \newline
+    \begin{enumerate}
+        \item $MAC_(FGHIJ5) = \mathit{m_0}$
+        \item $MAC_(ABCDE5) = \mathit{m_1}$
+        \item $MAC_(ABCDE5FGH9) = \mathit{m_2}$
+    \end{enumerate}
+    
+    Next step is ${m_0} \xor {m_1} = \mathit{V}$. Then XOr-ing \emph{V} with any of the previous messag lets us create tag.
+    
+    Hence these 3 queries to \emph{Oracle} are sufficient to forge the Tag of a new message which are queried previously and this leads to forgery. \newline
+    To avoid this the only solution is to append the length of the message at the beginning of the message rather than end.
+
 
 \bibliographystyle{plain}
 \bibliography{references}
