@@ -50,7 +50,7 @@
                 \item Security is guaranteed only against  efficient (i.e. polynomial-time) adversaries;
                 \item Negligible probability of success is allowed.
             \end{enumerate}
-            Both of these relaxations are essential for achieving practical cryptographic schemes, and in particular for bypassing the negative results for perfectly-secret encryption.
+            Both of these relaxations are essential for achieving practical cryptographic schemes. i.e. they support the definition of computational secrecy in the sense that any computationally secure scheme can't be broken with practical computational power within reasonable time.
         \end{flushleft}
     
     \paragraph{Question 2:} How is $\prod$'s \emph{security parameter} typically related to the input and output of algorithm Gen?
@@ -108,16 +108,16 @@
         \end{enumerate}
     
 \section{EAV-Security}
-    Recall the basic game-based definition for secrecy, EAV-security, and its alternative formulation, depicted in Figures 1 and 2, respectively. In both cases, a PPT adversary $\mathit{A}$ selects two messages in $\mathit{M}$, one of which is encrypted to form the challenge ciphertext $c_b$ that must be determined by $\mathit{A}$.
+    Recall the basic game-based definition for secrecy, EAV-security, and its alternative formulation, depicted in Figures 1 and 2, respectively. In both cases, a PPT adversary $\mathit{A}$ selects two messages in $\mathit{M}$, one of which is encrypted to form the challenge cipher-text $c_b$ that must be determined by $\mathit{A}$.
     
-    \paragraph{Question 1:} Explain how the definition in Figure 1 intuitively captures the property that any efficient adversary $\mathit{A}$ \emph{can essentially only guess the challenge ciphertext}.
+    \paragraph{Question 1:} Explain how the definition in Figure 1 intuitively captures the property that any efficient adversary $\mathit{A}$ \emph{can essentially only guess the challenge cipher-text}.
     
     \paragraph{Answer: \newline}
-        Figure 1 indicates the attack of \emph{A} in the presence of an Adversary. The adversary is allowed to choose the messages $\mathit{m_0}$ and $\mathit{m_1}$. Thus, even though it knows that c is an encryption of one of these plaintext messages, it still cannot determine which one was encrypted. Hence we know that the probability of choosing correct $b\prime$ by $\mathit{A}$ is exactly $\frac{1}{2}$. The probability  This is similar to guessing the outcome of the game with or without calculation to any random experiment. And thus an adversary \emph{A} can only guess the challenge ciphertext. \cite{section2question12}
+        Figure 1 indicates the attack of \emph{A} in the presence of an Adversary. The adversary is allowed to choose the messages $\mathit{m_0}$ and $\mathit{m_1}$. Thus, even though it knows that c is an encryption of one of these plain-text messages, it still cannot determine which one was encrypted. Hence we know that the probability of choosing correct $b\prime$ by $\mathit{A}$ is exactly $\frac{1}{2}$. The probability  This is similar to guessing the outcome of the game with or without calculation to any random experiment. And thus an adversary \emph{A} can only guess the challenge cipher-text. \cite{section2question12}
     
-    \paragraph{Question 2:} Explain how the definition in Figure 2 intuitively captures the property that any efficient adversary $\mathit{A}$ \emph{behaves essentially the same no matter what the challenge ciphertext is}.
+    \paragraph{Question 2:} Explain how the definition in Figure 2 intuitively captures the property that any efficient adversary $\mathit{A}$ \emph{behaves essentially the same no matter what the challenge cipher-text is}.
     \paragraph{Answer: \newline}
-        Definition in Figure 2 states that an adversary $\mathit{A}$ cannot determine which plaintext was encrypted with probability significantly better than a random guess. An another way of formalizing the definition is to state that every adversary behaves the same way whether it sees an encryption of $\mathit{m_0}$ or $\mathit{m_1}$. Since A outputs a single bit, "behaving the same way" means that it outputs 1 with almost the same probability in each case. Here constant \emph{b} is used rather than being chosen at random. Hence definition essentially states that \emph{A} cannot determine whether it is running in experiment $PrivK-EAV2_{A,\prod'}$(n,0) or $PrivK-EAV2_{A,\prod'}$(n,1).
+        Definition in Figure 2 states that an adversary $\mathit{A}$ cannot determine which plain-text was encrypted with probability significantly better than a random guess. An another way of formalizing the definition is to state that every adversary behaves the same way whether it sees an encryption of $\mathit{m_0}$ or $\mathit{m_1}$. Since A outputs a single bit, "behaving the same way" means that it outputs 1 with almost the same probability in each case. Here constant \emph{b} is used rather than being chosen at random. Hence definition essentially states that \emph{A} cannot determine whether it is running in experiment $PrivK-EAV2_{A,\prod'}$(n,0) or $PrivK-EAV2_{A,\prod'}$(n,1).
     
     \paragraph{Question 3:} Show that the alternative formulation of Figure 2 implies EAV-security as defined in Figure 1.
     \paragraph{Answer: \newline}
@@ -140,8 +140,8 @@
     \paragraph{Question 2:} Let $PrivK-EAV2_{A,\prod'}$(n) be the game in Figure 1 where \emph{A} is allowed to choose challenge messages of \emph{arbitrary length} for breaking encryption scheme $\prod' = (Gen',Enc',Dec')$, and consider the security notion derived by this modified game: Intuitively, $\prod'$ is EAV2-secure, if no efficient \emph{A} can determine $c_b$ better than guessing, even when $|m_0| \neq |m_1|$. Show that no EAV2-secure scheme $\prod'$ exists.
     \paragraph{Answer: \newline}
     
-\section{Pseudorandomness \& modes of encryption}
-    Recall the definitions of pseudorandom generators (PRGs) and pseudorandom functions (PRFs).
+\section{Pseudo-randomness \& modes of encryption}
+    Recall the definitions of pseudo-random generators (PRGs) and pseudo-random functions (PRFs).
     
     \paragraph{Question 1:} If \emph{H}:$\{0,1\}^{l(n)}$ is a PRG with expansion factor \emph{l(n)} $\geq$ \emph{2n}, then G(H) = $H(s_1,s_2,..., s_{\frac{n}{2}})$, where s = $s_1,s_2,..., s_{\frac{n}{2}}$ is also a PRG. Determine whether $G\prime(s)=G(0^{|s|}||s)$ is necessarily a PRG, when \emph{G} is PRG.
     
@@ -152,7 +152,7 @@
     \paragraph{Answer: \newline}
     
     
-    \paragraph{Question 4:} When using the CBC, OFB and CTR modes of operation what is the effect of: a) a single-bit error in the cipher text and b) a dropped ciphertext block)?
+    \paragraph{Question 4:} When using the CBC, OFB and CTR modes of operation what is the effect of: a) a single-bit error in the cipher text and b) a dropped cipher-text block)?
     \paragraph{Answer: \newline}
     \begin{enumerate}
         \item CBC mode: In CBC mode, plain text message is XOR-ed with output of previous block before adding to encryption. An initial Vector(IV) is used for initial block. 
@@ -162,24 +162,52 @@
                 \item Dropped cipher-text block:\newline
                 In this case, the plain text of the dropped block will not be available. This will also break the decryption chain since there won't previous cipher-text block is used as an input to XOR for decryption to get the plain text. The output of all the next blocks will be affected and will be different than original plain text.
             \end{enumerate}
-        \item OFB mode: In OFB mode, output of previous encryption block before being XOR-ed with plaintext is used as input to next block. An initial vector is used for first block.
+        \item OFB mode: In OFB mode, output of previous encryption block before being XOR-ed with plain-text is used as input to next block. An initial vector is used for first block.
             \begin{enumerate}
-                \item A single bit error in ciphertext:\newline
-                In this case, the error will not propagate to next block but it will remain in the same location and in the same block. The decrypted output won't differ much from original plaintext.
-                \item Droppped ciphertext block: \newline
-                In this case, similar to CBC, the plain text related to dropped block will not be available. But this will not affect next blocks since the cipher text is not used as input to next blocks and in this sense OFB is autorecoverable.
+                \item A single bit error in cipher-text:\newline
+                In this case, the error will not propagate to next block but it will remain in the same location and in the same block. The decrypted output won't differ much from original plain-text.
+                \item Dropped cipher-text block: \newline
+                In this case, similar to CBC, the plain text related to dropped block will not be available. But this will not affect next blocks since the cipher text is not used as input to next blocks and in this sense OFB is auto-recoverable.
             \end{enumerate}
-        \item CTR mode: In CTR mode, there is no feedback. pseudorandomness in the key stream is achieved using a counter. An \emph{n} bit counter is used to an initial predefined value and increased with predefined rule. Plaintext message are then XOR-ed with encrypted value of the counter.
+        \item CTR mode: In CTR mode, there is no feedback. pseudorandomness in the key stream is achieved using a counter. An \emph{n} bit counter is used to an initial predefined value and increased with predefined rule. Plain-text message are then XOR-ed with encrypted value of the counter.
             \begin{enumerate}
-                \item A single bit error in ciphertext:\newline
-                    This will be similar to OFB mode. Since the output of one block is not fed to another, the error will not propagate. It will remain in the same location and in the same block. The decrypted output won't differ much from original plaintext.
-                \item Droppped ciphertext block: \newline
+                \item A single bit error in cipher-text:\newline
+                    This will be similar to OFB mode. Since the output of one block is not fed to another, the error will not propagate. It will remain in the same location and in the same block. The decrypted output won't differ much from original plain-text.
+                \item Dropped cipher-text block: \newline
                 In this case, decryption of that block only will not be available. Since there is no feedback or chaining, other blocks will not be affected.            
             \end{enumerate}
     \end{enumerate}
 
 \section{Problem 5: Message authentication codes}
-    \paragraph{Question 4:}Show that appending the message length |m| at the end of the message \emph{m} before applying basic CBC-MAC, yields an insecure MAC for arbitrary-length messages.
+    
+    let $\prod = (Gen,Mac,Vrfy)$ be a MAC that is secure according to the security definition in Figure 3.
+    
+    \paragraph{Question 2:} Let \emph{F} be a PRF, $\langle i \rangle$ denote an $\frac{n}{2}$ encoding of integer \emph{i} and \emph{k} a uniform key in ${\{0,1\}}^n$. Show that the following MACs defined over messages $m=(m_1,m_2), m_i \in {\{0,1\}}^{\frac{n}{2}}$, are insecure.
+        \begin{enumerate}
+            \item The tag message $m = m_1,m_2$ is $t={F_k}(\langle 1 \rangle || {m_1}) \oplus {F_k}(\langle 2 \rangle || {m_2})$
+            \item The tag message $m = m_1,m_2$ is (\emph{r,t}), where $t={F_k}(r)\oplus {F_k}(\langle 1 \rangle || {m_1}) \oplus {F_k}(\langle 2 \rangle || {m_2})$
+        \end{enumerate}
+        
+    \paragraph{Answer: \newline}
+        \begin{enumerate}
+            \item 
+            \item
+                if we consider $r = \langle 1 || m_1$ where $m_1$ is any random message belonging $m_i \in {\{0,1\}}^\frac{n}{2}$, then its tag returned by \emph{Oracle} will be $\langle r,{0^n} \rangle$. This will be a valid tag for $m_1$. But any attack on this scheme doesn't require this tag to be verified. \newline
+                Hence even if we have a valid tag the scheme can be broken within polynomial time by an adversary. Thus this scheme is not secure.
+                \citep{section5question32}
+        \end{enumerate}
+    
+    \paragraph{Question 3:} Consider the modification of basic CBC-MAC, where a random initial block is used each time a message is authenticated. Namely, to authenticate message $m_1,...,m_l$ choose uniform $t_0 \leftarrow{{\{0,1\}}^n}$, run a basic CBC-MAC over augmented message $t_0,m_1,...,m_l$ to get tag $t_l$, and output tag $\langle{t_0,t_1}\rangle$. Show that this modification yields an insure MAC.
+    \paragraph{Answer: \newline}
+    Let's consider a single block message $m_0$. For this message block, let's assume that \emph{Oracle} returns MAC-tag as (\emph{IV},t). This means that the tag (\emph{m},t) is valid if original message was \emph{IV}. \newline
+    In general, for any random single block message when XOR-ed with \emph{m}, we get a valid MAC i.e.
+    \begin{center}
+        $(IV \oplus{m\prime},t)$ is valid for ${m\oplus{m\prime}}$
+    \end{center}
+    where $m\prime$ is any random message.\newline
+    This shows that its possible to obtain forged MAC for any single-block message.
+
+    \paragraph{Question 4:} Show that appending the message length |m| at the end of the message \emph{m} before applying basic CBC-MAC, yields an insecure MAC for arbitrary-length messages.
     \paragraph{Answer: \newline}
     If we append the length of the message at the end of message the message syntax, after CBC-MAC, will be \newline
     \begin{center}
@@ -191,12 +219,12 @@
     \end{center}
     For e.g. let's assume that below messages are queried \newline
     \begin{enumerate}
-        \item $MAC_(FGHIJ5) = \mathit{m_0}$
-        \item $MAC_(ABCDE5) = \mathit{m_1}$
-        \item $MAC_(ABCDE5FGH9) = \mathit{m_2}$
+        \item $MAC_{M_0} = \mathit{m_0}$
+        \item $MAC_{M_1} = \mathit{m_1}$
+        \item $MAC_{M_2} = \mathit{m_2}$
     \end{enumerate}
     
-    Next step is ${m_0} \xor {m_1} = \mathit{V}$. Then XOr-ing \emph{V} with any of the previous messag lets us create tag.
+    Next step is ${m_0} \oplus{m_1} = \mathit{V}$. Then XOR-ing \emph{V} with any of the previous message lets us create tag.
     
     Hence these 3 queries to \emph{Oracle} are sufficient to forge the Tag of a new message which are queried previously and this leads to forgery. \newline
     To avoid this the only solution is to append the length of the message at the beginning of the message rather than end.
