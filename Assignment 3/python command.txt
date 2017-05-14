@@ -1,0 +1,1 @@
+c:\Python34\python.exe c:\Users\pratik\Desktop\CS579\merkletree.py "C:\\Users\\pratik\\Desktop\\CS579\\lectureNotes"

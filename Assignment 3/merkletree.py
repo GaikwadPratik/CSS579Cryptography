@@ -180,7 +180,7 @@ if __name__ == '__main__':
 	print("Time taken for Merkle tree root when started with files {0}".format(end-start))
 	
 	start = time.time()
-	directFilesHash = merkleTree.ComputeMerkleTreeOverFileHash(merkleTree.fileHashes)
+	directFilesHash = merkleTree.ComputeMerkleTreeOverFileHash(dirName)
 	print("Hash of Merkle tree root when started with hash {0}".format(directFilesHash))	
 	end = time.time()
 	print("Time taken for Merkle tree root when started with files {0}".format(end-start))
