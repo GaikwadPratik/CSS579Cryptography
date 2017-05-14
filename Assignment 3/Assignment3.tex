@@ -109,7 +109,7 @@
     \paragraph{Answer: \newline}
         \begin{enumerate}
             \item The messages are created by raising generator to various powers and performing modulus operation. This results in two same values for separate powers. So when prime number used in large, then the calculation of discrete of log is very hard. Because from Fermat's theorem we can conclude that there are no three numbers greater than which satisfies below equation $a^n + b^n = c^n$.
-            \item 
+            \item We know that ||p|| = n and G is PPT algorithm that takes $1^n$ as input and generates $\mathcal{G}$ of order p. Hence DL will reasonable if p and n both are large such that $\mathcal{A}$ can not easily compute \emph{h}.
         \end{enumerate}
         
     \paragraph{Question 3:} What are the \emph{computational} Diffie-Hellman (CDH) and \emph{decisional} Diffie-Hellman (DDH) assumptions? How do they relate to each other and the DL assumption? (Does the DDH assumption imply the CDH assumption and why? Does the CDH assumption imply the DL assumption and why? Amongst all three assumptions, which is the strongest and which the weakest?) Why is the security of the Diffie-Hellman key-agreement protocol based on the DDH assumption?
@@ -161,15 +161,79 @@
         
     \paragraph{Question 2:} Recall the basic game-based definition for computational secrecy, EAV-security depicted in Figure 1, that is required for public-key encryption. Show why \emph{no perfectly secure public-key encryption scheme exists}, i.e., EAV-security cannot be satisfied \emph{unconditionally}.
     \paragraph{Answer: \newline}
+           Let's consider the message space ${\mathcal{M}=\{0,1\}}$ over deterministic PPT algorithm $Enc_k{(m,r)}$ such that \emph{r} is chosen randomly from ${\{0,1\}}^{l(n)}$ used by a computationally unbound adversary $\mathcal{A}$. $\mathcal{A}$ can consider
+           all possible values of \emph{r} and check which \emph{r} corresponds to $P_k$. Once we find such \emph{r}, then we can compute corresponding $S_k$.\newline
+           In other words $\mathcal{A}$, can design an algorithm with known \emph{c} and \emph{k} such that encryption of \emph{m} appended with random bit \emph{r} results in \emph{c}. Running this algorithm over unbounded time will yield $P_k$ and computationally $S_k$ can be calculated using \emph{r}. And thus no perfectly EAV-secure public key encryption scheme exists.
+           
+    \paragraph{Question 3:} Let $\prod = (Gen, Enc, Dec)$ be the El Gamal public-key encryption scheme, encrypting elements of a (multiplicative, cyclic) group of \emph{G} (of prime order \emph{p}) into pairs of elements in G.
+    \begin{enumerate}
+        \item Show that $\prod$ is \emph{partially homomorphic}, namely that for $m_1,\ m_2$ in \emph{G}, $Enc_{pk}(m_1,m_2) = Enc_{pk}(m_1).Enc_{pk}(m_2)$, where multiplication in the ciphertext space is defined as pairwise multiplication in the message space (that is, (a,b).(c,d) = (a.c, b.d)).
+        \item It can be shown that the El Gamal scheme is EAV-secure. Explain why this doesn't conflict with partially homomorphic above. Is El Gamal CPA-secure and why?
+    \end{enumerate}
     
-    %Secure PK Encryption impossible when P=NP, as deriving K-1 from K is in NP.
+    \paragraph{Answer:\newline}
+        A cryptosystem is considered partially homomorphic if it exhibits either additive or multiplicative homomorphism, but not both\citep{homomorphicdef}
+        
+        \begin{enumerate}
+            \item 
+                Let's consider El Gamal public key $\alpha$, $\beta$, \emph{p} with private key $S_k$. The encryption of message \emph{m} with key \emph{k} is $Enc_k(m) = (y_1,y_2)$ where, 
+                    \begin{center}
+                        \begin{math}
+                            {y_1} = \alpha^k mod p \newline
+                            {y_2} = m\beta^k mod p
+                        \end{math}
+                    \end{center}
+                    
+                Extending this to two messages $m_1$ and $m_2$ with two keys $k_1$ and $k_2$ the ciphertexts are:
+                    \begin{center}
+                        \begin{math}
+                            Enc_{m_1} = (y_1,y_2) = (\alpha^{k_1}mod p, m\beta^{k_1}mod p)
+                            Enc_{m_2} = (y_3,y_4) = (\alpha^{k_2}mod p, m\beta^{k_2}mod p)
+                        \end{math}
+                    \end{center}
+                    
+                Multiplying above two cipher text together:
+                    \begin{center}
+                        \begin{math}
+                            (y_1,y_2).(y_3,y_4) = (y_1.y_3,y_2.y_4) = (\alpha^{k_1}.\alpha^{k-2},m_1{\beta^{k_1}}.m_2{\beta^{k_2}}) = (\alpha^{k_1+k_2}, {m_1}{m_2}\beta^{k_1+k_2})
+                        \end{math}
+                    \end{center}
+                    
+                Decrypting this cipher text results in:
+                    \begin{center}
+                        \begin{math}
+                            Dec_{S_k}(\alpha^{k_1+k_2},{m_1}{m_2}\beta^{k_1+k_2}) = m_1m_2
+                        \end{math}
+                    \end{center}
+                \citep{homomorphicprof}
+            
+            \item 
+                Since ElGamal uses public key encryption, its not EAV secure as mentioned in earlier answers. But if can prove that its EAV secure, it uses DDH assumption which is hard to solve. 
+                
+                Yes, ElGamal is CPA secure. The DDH assumption implements that if we are given $g^a$, $g^b$, $g^{ab}$ then it is very hard to distinguish between $g^{ab}$ and random $g^r$ where \emph{r} is random value. In our CPA secure game, when we use it with ElGamal system probability that $\mathcal{A}$ correctly guesses \emph{b} is exactly $\frac{1}{2}$. This is nothing more than guessing the output. Thus it becomes CPA secure. \citep{elCPASec}
+        \end{enumerate}
+    
+    \paragraph{Question 4:} Parameterized by modulo \emph{N} (the product p.q of two large primes) and given the key pair \emph{(pk, sk) = (e, d)} (with $gcd(e, \phi(N)) = 1$ and \emph{d.e = 1}mod$\phi(N)$) he RSA cryptosystem is based on the \emph{exponentiation} function $f_{RSA}(x,k)=x^k$mon\emph{N}, where $x\in {Z_N}^{*}$ and $k\in{e,d}$.
+    \begin{enumerate}
+        \item \emph{Plain} RSA encryption applies $f_{RSA}(.,pk)$ \emph{directly} on plaintext \emph{m} to compute ciphertext $c=m^e mod N$. Provide reason why plain RSA encryption does \emph{not} achieve CPA security.
+        \item \emph{Plain} RSA signing applies $f_{RSA}(.,pk)$ \emph{directly} on plaintext \emph{m} to compute signature $\sigma=m^d mod N$. Provide a reason why plain RSA signing does \emph{not} achieve unforgeability.
+    \end{enumerate}
+    
+    \paragraph{Answer:\newline}
+        \begin{enumerate}
+            \item Plain RSA is public key based encryption system. Thus it is not EAV secure. Due to this RSA becomes deterministic algorithm for encryption. Hence any attacker can recover original message by trying all possible combinations. Hence it is not CPA secure.
+            \item To signature is calculated as $\sigma = sign_{sk}(m) = m^{s_k}mod N$. with two prime numbers p and q such that $N=p.q$. The verification algorithm then used is as: $Ver_{v_k}(\sigma) = \sigma^{p_k} = {(m^d mod N)}^{p_k}$ = m mond N. This is derived from the fact that  $s_k.p_k=1 mod \phi(N)$. \newline
+            Thus attacker can compute inverse RSA function with negligible probability and can obtain signature for any message.
+        \end{enumerate}
+        
+        
 
 \section{Merkle tree}
     Recall the secure data outsourcing model described in Figures 2, 3 and 4. To answer the questions below, use any programming language of your choice that supports the SHA-256 hash function h.
     
     \paragraph{Question 1:} By applying the hash function h on messages of variable lengths, experimentally evaluate the time $T_h(x)$ that is required to hash a message \emph{m} as a function of its length $x = |m|$ in bytes. Plot a graph for function $T_h(x)$. What do you observe about $T_h(x)$? How does this confirm the design method used in the design of the SHA-2 family of hash functions?
     \paragraph{Answer:\newline}
-        The plot of time required to calculate SHA256 hash value of variable length message is as below. Here variable length message was obtained using the contents of the files of lecutre notes.
+        The plot of time required to calculate SHA256 hash value of variable length message is as below. Here variable length message was obtained using the contents of the files of \underline{\emph{lecture}} notes from canvas.
         
         \begin{figure}[H]
             \centering
@@ -177,6 +241,8 @@
             \caption{plot of time vs length of content}
             \label{fig:SHA256 timing vs content length}
         \end{figure}
+        
+        Even though the length of output hash is constant, time taken to compute Merkle-tree hash increases with length of the message.
         
     \paragraph{Question 2:} Compute the Merkle tree (directly) over files $F = (F_1; F_2; . . . ; F_8)$ where $F_i$ is the i-th posted .pdf file with lecture slides for CS579. What is the digest \emph{d}, i.e., the hash of the tree root? What is the average proof size and what is the average verification time, measured over all possible queries $i = 1; 2; . . . 8$? How does such average performance compare against the asymptotic proof size and verification time that Merkle trees provide?    
     \paragraph{Answer:\newline}
@@ -189,6 +255,7 @@
     
     \paragraph{Question 4:} Assume that the user wants to be able to have \emph{secure} access to its outsourced files F also from a different device $D^\prime$, but simply migrating the digest \emph{d} to device $D^\prime$ from the existing device \emph{D} is not possible. How the use of public-key cryptography can provide a solution to this problem?
     \paragraph{Answer:\newline}
+        The user can encrypt the hash generated from Merkle-tree hash using public key. He then can send this ciphered hash to $D^{\prime}$. There is can use private key to obtain hash value again. He then can download files from and recompute the Merkl-tree hash. If the two hash values equal that means the original hash was migrated successfully and files are accessed without any modifications.
     
 \bibliographystyle{plain}
 \bibliography{references}
